@@ -29,6 +29,10 @@
 
 #include "liberty.h"
 
+/* Define the meaningless moves arrays */
+int meaningless_black_moves[MAX_MOVES];
+int meaningless_white_moves[MAX_MOVES];
+
 /* Capture as many strings of the given color as we can. Played stones
  * are left on the board and the number of played stones is returned.
  * Strings marked in the exceptions array are excluded from capturing

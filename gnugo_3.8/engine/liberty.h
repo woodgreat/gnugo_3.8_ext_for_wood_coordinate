@@ -24,6 +24,7 @@
 #ifndef _LIBERTY_H_
 #define _LIBERTY_H_
 
+#include "gnugo.h"
 #include "board.h"
 #include "hash.h"
 #include "gnugo.h"
@@ -856,9 +857,12 @@ struct worm_data {
 
 extern struct worm_data worm[BOARDMAX];
 
+/* Maximum possible moves on a Go board */
+#define MAX_MOVES (BOARDMAX * BOARDMAX)
+
 /* Unconditionally meaningless moves. */
-int meaningless_black_moves[BOARDMAX];
-int meaningless_white_moves[BOARDMAX];
+extern int meaningless_black_moves[MAX_MOVES];
+extern int meaningless_white_moves[MAX_MOVES];
 
 /* Surround cache (see surround.c) */
 
