@@ -1,0 +1,47 @@
+# Makefile_cross - Cross-compile for Windows on Ubuntu
+# Use with make
+
+# 交叉编译器设置
+CC = x86_64-w64-mingw32-gcc
+CFLAGS = -g -O2 -Wall -W -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wundef -Wdeclaration-after-statement
+CPPFLAGS = -I. -Iutils -Isgf -Iengine -Ipatterns
+LDFLAGS = 
+LIBS = -lm -lwsock32
+
+# 文件扩展名
+EXEEXT = .exe
+OBJEXT = o
+
+# 目标
+TARGET = gnugo$(EXEEXT)
+
+# 所有源文件
+UTILS_SOURCES = utils/getopt.c utils/getopt1.c utils/gg_utils.c utils/random.c utils/winsocket.c
+SGF_SOURCES = sgf/sgf_utils.c sgf/sgfgen.c sgf/sgfnode.c sgf/sgftree.c
+ENGINE_SOURCES = engine/aftermath.c engine/board.c engine/boardlib.c engine/breakin.c engine/cache.c engine/clock.c engine/combination.c engine/dragon.c engine/endgame.c engine/filllib.c engine/fuseki.c engine/genmove.c engine/globals.c engine/handicap.c engine/hash.c engine/influence.c engine/interface.c engine/matchpat.c engine/montecarlo.c engine/move_reasons.c engine/movelist.c engine/optics.c engine/oracle.c engine/owl.c engine/persistent.c engine/printutils.c engine/readconnect.c engine/reading.c engine/semeai.c engine/sgfdecide.c engine/sgffile.c engine/shapes.c engine/showbord.c engine/surround.c engine/unconditional.c engine/utils.c engine/value_moves.c engine/worm.c
+PATTERNS_SOURCES = patterns/aa_attackpat.c patterns/apatterns.c patterns/barriers.c patterns/compress_fuseki.c patterns/conn.c patterns/connections.c patterns/dfa.c patterns/dpatterns.c patterns/endgame.c patterns/extract_fuseki.c patterns/eyes.c patterns/fuseki13.c patterns/fuseki19.c patterns/fuseki9.c patterns/fusekipat.c patterns/globals.c patterns/handipat.c patterns/helpers.c patterns/influence.c patterns/joseki.c patterns/josekidb.c patterns/mcpat.c patterns/mkeyes.c patterns/mkmcpat.c patterns/mkpat.c patterns/oraclepat.c patterns/owl_attackpat.c patterns/owl_defendpat.c patterns/owl_vital_apat.c patterns/patterns.c patterns/transform.c patterns/uncompress_fuseki.c
+INTERFACE_SOURCES = interface/main.c interface/play_ascii.c interface/play_gmp.c interface/play_gtp.c interface/play_solo.c interface/play_test.c interface/gmp.c interface/gtp.c
+
+# 所有源文件
+SOURCES = $(UTILS_SOURCES) $(SGF_SOURCES) $(ENGINE_SOURCES) $(PATTERNS_SOURCES) $(INTERFACE_SOURCES)
+
+# 所有目标文件
+OBJECTS = $(SOURCES:.c=.o)
+
+# 默认目标
+all: $(TARGET)
+
+# 链接目标
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
+
+# 编译规则
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+# 清理
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+
+# 依赖项
+.PHONY: all clean
